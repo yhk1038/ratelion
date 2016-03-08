@@ -1,0 +1,193 @@
+<div class="panel panel-default col-md-12">
+  <% check=0 %>
+  <%# if @lion.rates.count == 0 %>
+      <%# counts = -1 %>
+  <%# else %>
+      <% counts = @lion.rates.count %>
+  <%# end %>
+  <!-- Default panel contents -->
+  <div class="panel-heading" style="font-size:25px;">applier <b><%= @lion.name %></b> | <b><%= @rates.count %>명</b>으로부터 평가됨. 완료율(<%= counts*100/8 %>%)---- <a href="/home/index" class="btn btn-primary">돌아가기</a>
+      <span style="float:right;">
+        <% unless @lion.file == nil %>
+          <a href="/apply_file/<%= @lion.file %>" class="btn btn-primary btn-bg rate_input" download><%= "지원서보기" %></a>
+        <% else %>
+          <%= "X" %>
+        <% end %>
+      </span>
+  </div>
+  <div class="panel-body">
+    <!--<form action="/home/save_apply" method="POST">-->
+      <!--지원번호, 이름, 학번, 학과, 이메일, 전화번호, 성별, 나이, 지원서파일, 비고-->
+        <% apply_num = Apply.count + 1 %>
+        <div class="col-md-3">
+          <img src="<%= @lion.file2 %>" alt="프로필 이미지">
+        </div>
+        <div class="col-md-3">
+          지원번호 : <h4><b><%= @lion.apply_num %>번 지원자</b></h4>
+          이름 : <h4><b><%= @lion.name %></b></h4>
+          학번 : <h4><b><%= @lion.student_id %></b></h4>
+          전공 : <h4><b><%= @lion.major %></b></h4>
+        </div>
+        <div class="col-md-3">
+          이메일 : <h4><b><%= @lion.email %></b></h4>
+          전화번호 : <h4><b><%= @lion.phonenumber %></b></h4>
+          성별 : <h4><b><%= @lion.sex %></b></h4>
+          나이 : <h4><b><%= @lion.age %></b></h4>
+        </div>
+        <div class="col-md-3">
+          비고 : <h5><b><%= @lion.etc %></b></h4>
+        </div>
+    </form>
+  </div>
+  <div class="panel-body">
+  
+  <b>기본적으로 각 평가항목은 개인의 주관적 판단에 따라 해석하여 평가하셔도 됩니다.<br>
+  <가이드라인..?><br>
+  창의성 :</b> 지원자의 창의적인 생각 (주관적으로..)<br>
+  <b>의지 :</b> 멋사 활동에 있어서 끝까지 따라올지 여부? 등등..<br>
+  <b>경험 :</b> 현재까지 활동한 기타 동아리 경험이나 프로그래밍 경험 ( 병행이 가능한 활동인지 아니면 기존의 했던 활동을 보며 성실함을 판단.)<br>
+  <b>이유 :</b> 멋사 지원 동기 및 아이디어 등등..<br>
+  <b>기타 :</b> 기타 평가자 주관적 사유 등등....<br>
+  
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+    <thead>
+        <tr style="font-weight:bold;">
+            <td width="50px">#</td>
+            <td width="10%">이름(평가자)</td>
+            <td width="70px">창의성</td>
+            <td width="70px">의지</td>
+            <td width="70px">경험</td>
+            <td width="70px">이유</td>
+            <td width="70px">기타</td>
+            <td width="70px">코멘트</td>
+            <td width="100px">.</td>
+        </tr>
+    </thead>
+    <tbody>
+        <% fe = 1 %>
+        <%
+            total_point1 = 0
+            total_point2 = 0
+            total_point3 = 0
+            total_point4 = 0
+            total_point5 = 0
+        %>
+        <% @rates.each do |rate| %>
+            <tr>
+                <% if current_user.name == rate.user_name %>
+                  <form action="/home/save_rate" method="POST">
+                  <input type="hidden" name="user_name" value="<%= current_user.name %>">
+                  <input type="hidden" name="apply_id" value="<%= @lion.id %>">
+                  <input type="hidden" name="mod" value="<%= rate.id %>"></td>
+                  <td><%= fe %></td>
+                  <td><%= rate.user_name %></td>
+                  <td><input type="number" min="1" max="20" value="<%= rate.point1 %>" name="point1"></td>
+                  <td><input type="number" min="1" max="20" value="<%= rate.point2 %>" name="point2"></td>
+                  <td><input type="number" min="1" max="20" value="<%= rate.point3 %>" name="point3"></td>
+                  <td><input type="number" min="1" max="20" value="<%= rate.point4 %>" name="point4"></td>
+                  <td><input type="number" min="1" max="20" value="<%= rate.point5 %>" name="point5"></td>
+                  <td><textarea name="comment" class="rate_input"><%= rate.comment %></textarea></td>
+                  <td>
+                        <% check = 1 %>
+                        <a href="/home/delete_rate/<%= rate.id %>" class="btn btn-primary btn-sm integer">삭제</a>&nbsp;&nbsp;
+                        <input type="submit" value="수정" class="btn btn-primary rate_input">
+                  </td>
+                <% else %>
+                  <td><%= fe %></td>
+                  <td><%= rate.user_name %></td>
+                  <td><%= rate.point1 %></td>
+                  <td><%= rate.point2 %></td>
+                  <td><%= rate.point3 %></td>
+                  <td><%= rate.point4 %></td>
+                  <td><%= rate.point5 %></td>
+                  <td ><%= rate.comment %></td>
+                  <!--style="overflow:auto;"-->
+                  <td>
+                  <% if session[:admin] == '2015' %>
+                  <a href="/home/delete_rate/<%= rate.id %>" class="btn btn-primary btn-sm">삭제</a>
+                  <% end %>
+                  </td>
+                <% end %>
+            </tr>
+            
+            
+            
+        <% fe = fe + 1 %>
+        <% total_point1 = total_point1 + rate.point1 %>
+        <% total_point2 = total_point2 + rate.point2 %>
+        <% total_point3 = total_point3 + rate.point3 %>
+        <% total_point4 = total_point4 + rate.point4 %>
+        <% total_point5 = total_point5 + rate.point5 %>
+        <% end %>
+        <% if check==0 %>
+        <tr style="font-weight:bold;">
+            <form action="/home/save_rate" method="POST">
+                <td><b><%= @rates.count + 1 %></b></td>
+                <td><%= current_user.name %>
+                <input type="hidden" name="user_name" value="<%= current_user.name %>">
+                <input type="hidden" name="apply_id" value="<%= @lion.id %>">
+                <input type="hidden" name="mod" value="0"></td>
+                <% Rate.attribute_names.each do |x| %>
+                <% next if x.to_s == 'id' %>
+                <% next if x.to_s == 'apply_id' %>
+                <% next if x.to_s == 'user_name' %>
+                <% next if x.to_s.split('').last.to_i > 5 %>
+                <% next if x.to_s.split('').last.to_i == 0 %>
+                <% next if x.to_s == 'comment' %>
+                <% next if x.to_s == 'created_at' %>
+                <% next if x.to_s == 'updated_at' %>
+                <td>
+                    <select name="<%= x %>" class="rate_input">
+                        <% point = 1 %>
+                        <% loop do %>
+                        <option value="<%= point %>"><%= point %>점</option>
+                        <% break if point == 20 %>
+                        <% point = point + 1 %>
+                        <% end %>
+                    </select>
+                </td>
+                <% end %>
+                <td><textarea name="comment" class="rate_input"></textarea></td>
+                <td><input type="submit" value="등록" class="btn btn-primary rate_input"></td>
+                
+                <style>
+                    .rate_input{
+                        width:100%;
+                    }
+                    .integer{
+                        width:47%;
+                    }
+                </style>
+            </form>
+        </tr>
+        <% end %>
+        <% total = total_point1 + total_point2 + total_point3 + total_point4 + total_point5 %>
+        <tr style="font-weight:bold;">
+            <td>평가율 <%= @rates.count %>/8 명</td>
+            <td>**<%= @lion.name %>님의 총점을 합산합니다**</td>
+            <td>창의성 : <%= total_point1 %></td>
+            <td>의지 : <%= total_point2 %></td>
+            <td>경험 : <%= total_point3 %></td>
+            <td>이유 : <%= total_point4 %></td>
+            <td>기타 : <%= total_point5 %></td>
+            <td>
+                <!--<a href="?m=1" class="btn btn-primary btn-sm">-->
+                <!--<% if params[:m] != '1' %>-->
+                <!--    편집모드-->
+                <!--<% else %>-->
+                <!--    다시쓰기-->
+                <!--<% end %>-->
+                <!--</a>-->
+            </td>
+            <td>총점 : <%= total %>&nbsp;&nbsp;&nbsp;
+            <% if @rates.count != 0 %>
+            평균 : <%= total/counts %>
+            <% end %>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+</div>

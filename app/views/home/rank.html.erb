@@ -1,0 +1,80 @@
+
+<div class="panel panel-default col-md-12">
+  <!-- Default panel contents -->
+  <div class="panel-heading" style="font-size:25px;">멋쟁이사자처럼 at 동국대학교 <a href="/home/index">.</a> <span style="float: right;">지원자 <b>총 <%= Apply.count %></b>명 ----- <a href="/home/index" class="btn btn-primary">홈으로</a> <a href="/home/mod"> 비번변경</a> <a href="/user/sign_out" class="btn btn-alarm">로그아웃</a></span></div>
+  
+  <div class="panel-heading" style="font-size:25px; text-align: center; font-weight: bold;">
+    전체 서류심사 완료율 = <%= Rate.count * 100 / (Apply.count * 8) %>% 총 <%= (Apply.count * 8) - Rate.count %>개 남음.
+  </div>
+  <!-- Table -->
+  <!--Status.where(:status => params[:cat_id]).order("created_at DESC")-->
+  <!-- Table -->
+  <table class="table">
+    <thead>
+        <tr style="font-weight:bold;">
+          <td style="width:1%;">순위</td>
+            <td style="width:1%;">id</td>
+            <td style="width:5%;">이름(username)</td>
+            <td style="width:5%;">학번(student_id)</td>
+            <td style="width:0%;">전공(major)</td>
+            <td style="width:5%;">이메일(email)</td>
+            <td style="width:5%;">전화번호(phonenumber)</td>
+            <td style="width:5%;">성별(sex)</td>
+            <td style="width:5%;">나이(age)</td>
+            <td style="width:0%;">평가 진행률</td>
+            <td style="width:15%;">비고(etc)</td>
+            <td>총점</td>
+        </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      
+      <%
+        # tmp = Rate.select('apply_id, sum(point1+point2+point3+point4+point5) as total').group('apply_id')
+        # tmp.each do |x|
+        #   tmp.total = tmp.total / Apply.find(tmp.apply_id).count if Apply.find(tmp.apply_id).count > 0
+        # end
+        # tmp.order('total desc')
+      %>
+      <!--Photo.order('full_downloads + presentation_downloads')-->
+        <% Rank.all.order('score desc').each do |x| %>
+          <% tpoint = 0 %>
+          <% 
+            i+=1 
+            y = Apply.find(x.apply_id)
+          %>
+          
+          <!--Expense.select('department_id, sum(amount) as total').group('department_id').order('total desc').each do |department_expense|-->
+          <!--    # In department_expense you have :department_id and :total-->
+          <!--    department = Department.find(department_expense.department_id)-->
+          <!--    # In department now you have the rest of fields-->
+          <!--    # Do whatever you have to do with this row of department + expense-->
+          <!--    # Example-->
+          <!--    print "Department #{department.name} from #{department.company}: $#{department_expense.total}"-->
+          <!--end-->
+          <%
+            # Rate.select('apply_id, sum(point1+point2+point3+point4+point5) as total').group('apply_id').order('total desc').each do |x|
+            #   y = Apply.find(x.apply_id)
+          %>
+          
+            <tr>
+                <td><a href="/home/rate/<%= y.id %>"><%= i %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.apply_num %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.name %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.student_id %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.major %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.email %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.phonenumber %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.sex %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><%= y.age %></a></td>
+                <td><a href="/home/rate/<%= y.id %>"><b>8</b>명 중 <b><%= y.rates.count %></b>명<br><b>(<%= y.rates.count*100/8 %>%)</b></a></td>
+                <td><%= y.etc %></td>
+                <td>
+                  <%# tpoint = tpoint / apply.rates.count if apply.rates.count > 0 %>
+                  <%= x.score %> 점
+                </td>
+            </tr>
+          <% #end %>
+        <% end %>
+    </tbody>
+  </table>

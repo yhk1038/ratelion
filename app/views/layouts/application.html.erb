@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RateLion-DGU</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta charset="utf-8">
+   <!-- 합쳐지고 최소화된 최신 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <!-- 부가적인 테마 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+  <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <!-- 드롭바용 제이커리 -->
+  <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> 
+  <!-- 아이콘용 -->
+    <!--파비콘-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://dongguk.likelion.net/home/img/favicons/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="http://dongguk.likelion.net/home/img/favicons/apple-touch-icon-60x60.png">
+	<link rel="icon" type="image/png" href="http://dongguk.likelion.net/home/img/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="http://dongguk.likelion.net/home/img/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="http://dongguk.likelion.net/home/img/favicons/manifest.json">
+	<link rel="shortcut icon" href="http://dongguk.likelion.net/home/img/favicons/favicon.ico">
+	<meta name="msapplication-TileColor" content="#00a8ff">
+	<meta name="msapplication-config" content="http://dongguk.likelion.net/home/img/favicons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- 480 481-767 768-979 980-1199 1200 -->
+  <link rel="stylesheet" href="/css/-480.css" media="all and (max-width:480px)">
+  <link rel="stylesheet" href="/css/481-767.css" media="all and (min-width:481px) and (max-width:767px)">
+  <link rel="stylesheet" href="/css/768-979.css" media="all and (min-width:768px) and (max-width:979px)">
+  <link rel="stylesheet" href="/css/980-1199.css" media="all and (min-width:980px) and (max-width:1199px)">
+  <link rel="stylesheet" href="/css/1200-.css" media="all and (min-width:1200px)">
+  <link rel="stylesheet" href="/css/all.css">
+  <!--글씨체 한나체로 변경-->
+  <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/earlyaccess/nanumgothic.css' rel='stylesheet' type='text/css'>  
+</head>
+<body class="background">
+<%
+ blank="col-5-1 col-4-1 col-2-1 col-1-1 col--3-3 background"
+ content="col-5-10 col-4-10 col-2-10 col-1-10 col-3-11 background"
+%>
+
+<div class="<%= blank %>"></div>
+<div class="<%= content %>">
+  <%= yield %>
+</div>
+<div class="<%= blank %>"></div>
+
+</body>
+</html>

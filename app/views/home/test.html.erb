@@ -1,0 +1,54 @@
+<% @mbr = ['김용현','박현민','전민호','윤세영','정예원','류진이','이재철','최병재'] %>
+
+<div class="panel-heading" style="font-size:25px; text-align: center; font-weight: bold;">
+    전체 서류심사 완료율 = <%= Rate.count/(Apply.count * 8) %>% <% if session[:admin] == '2015' %>총 <%= (Apply.count * 8) - Rate.count %>개 남음.<% end %>
+  </div>
+  <!-- Table -->
+  <table class="table">
+    <thead>
+      <tr>
+        <td style="font-weight:bold;">심사자</td>
+        <% names = [] %>
+        <% Apply.all.each do |apply| %>
+          <td style="font-weight:bold;"><a href="/home/rate/<%= apply.id %>"><%= apply.name %></a></td>
+          <% names << apply.id %>
+        <% end %>
+      </tr>
+    </thead>
+    
+    <style>
+        .rate_input{
+            width:100%;
+        }
+        .integer{
+            width:47%;
+        }
+    </style>
+                
+    <tbody>
+      <%# i = 0 %>
+        <% @mbr.each do |mbr| %>
+            <tr>
+                <td style="width:20px;"><%= mbr %></td>
+                <% Apply.all.each do |apply| %>
+                  <% flag=0 %>
+                    <% apply.rates.each do |ap| %>
+                        <% 
+                          if ap.user_name == mbr
+                            flag=1
+                            next
+                          end
+                        %>
+                    <% end %>
+                <% if flag == 1 %>
+                    <td style="width:20px;padding:0; background:#0A6; border: 2px solid #2196F3;" class="finished_apply"></td>
+                  <% else %>
+                    <td style="width:20px;padding:0; background:#00BCD4; border: 2px solid #2196F3;" class="finished_apply"></td> 
+                  <% end %>
+                <% end %>
+            </tr>
+        <% end %>
+      <!--<td style="width:20px;padding:0; background:#0A6; border: 2px solid #2196F3;" class="finished_apply"></td>-->
+    </tbody>
+  </table>
+</div>

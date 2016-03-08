@@ -1,0 +1,51 @@
+<center>
+    <form method="POST" action="/user/sign_in">
+    <div class="sign_in-container well well-out">
+        <div class="well well-in">
+            <table class="sign_in-table">
+                <tr>
+                    <td><img src="/img/email-icon.png" class="sign_in-icon"/> </td>
+                    <td>
+                        <input type="text" name="user_id" class="form-control" placeholder="Your Name">
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="/img/password-icon.png" class="sign_in-icon"/> </td>
+                    <td>
+                        <input type="password" name="password" class="form-control" placeholder="Password">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="rows">
+            <p class="error-msg"><%= flash[:error] %></p>
+        <div>
+        <div class="rows">
+            <input type="submit" style="margin-right:5px;" class="btn btn-success sign_in-btn" value="Sign_in">
+            <!--<button onclick="sign_up();" style="margin-right:5px;" class="btn btn-primary sign_in-btn">Sign_up</button> -->
+        </div>
+    </div>
+    </form>
+</center>
+
+<!--<script>-->
+<!--    document.getElementById("user_id").addEventListener("keydown", function(e) {-->
+<!--        if (!e) { var e = window.event; }-->
+        
+<!--        if (e.keyCode == 13) { sign_in(); }-->
+<!--    }, false);-->
+    
+<!--    document.getElementById("password").addEventListener("keydown", function(e) {-->
+<!--        if (!e) { var e = window.event; }-->
+        
+<!--        if (e.keyCode == 13) { sign_in(); }-->
+<!--    }, false);-->
+    
+<!--    function sign_in(){-->
+<!--        location.href="/user/sign_in?user_id=" + $('#user_id').val() + "&password=" + $('#password').val();-->
+<!--    }-->
+    
+<!--    function sign_up(){-->
+<!--        location.href="/user/sign_up?user_id=" + $('#user_id').val() + "&password=" + $('#password').val();-->
+<!--    }-->
+<!--</script>-->

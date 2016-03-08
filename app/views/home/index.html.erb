@@ -1,0 +1,184 @@
+<% tda = %>
+<div class="panel panel-default col-md-12">
+  <!-- Default panel contents -->
+  <div class="panel-heading" style="font-size:25px;"><span>멋쟁이사자처럼 at 동국대학교 
+  <a href="/home/<%= "admin" unless session[:admin]=='2015' %><%= "admin2" if session[:admin]=='2015' %>">.</a> <a style="color:blue" href="/home/rank">순위</a>
+  </span><span style="float: right;">지원자 <b>총 <%= Apply.count %></b>명 ----- <a href="/home/index" class="btn btn-primary">홈으로</a> <a href="/home/mod"> 비번변경</a> <a href="/user/sign_out" class="btn btn-alarm">로그아웃</a></span></div>
+  <% if session[:admin] == '2015' %>
+  <div class="panel-body">
+    <% if params[:id] == nil %>
+    <form action="/home/save_apply" method="POST">
+      <!--지원번호, 이름, 학번, 학과, 이메일, 전화번호, 성별, 나이, 지원서파일, 비고-->
+        <% apply_num = Apply.count + 1 %>
+        <div class="col-md-4">
+          지원번호 : <input type="text" name="apply_num" value="<%= apply_num %>"><br><br>
+          이름 : <input type="text" name="name"><br><br>
+          학번 : <input type="text" name="student_id"><br><br>
+          전공 : <input type="text" name="major">
+        </div>
+        <div class="col-md-4">
+          이메일 : <input type="text" name="email"><br><br>
+          전화번호 : <input type="text" name="phonenumber"><br><br>
+          성별 : <input type="text" name="sex"><br><br>
+          나이 : <input type="text" name="age">
+        </div>
+        <div class="col-md-4">
+          지원서파일 : <input type="text" name="file"><br><br>
+          지원서파일2 : <input type="text" name="file2"><br><br>
+          비고 : <textarea name="etc"></textarea><br><br>
+          <input type="hidden" name="rated" value="0">
+          <input type="submit" class="btn btn-blue" value="추가">
+        </div>
+    </form>
+    <% else %>
+    <% mod_apply = Apply.find(params[:id]) %>
+    <form action="/home/save_apply/<%= mod_apply.id %>" method="POST">
+      <!--지원번호, 이름, 학번, 학과, 이메일, 전화번호, 성별, 나이, 지원서파일, 비고-->
+        <div class="col-md-4">
+          지원번호 : <input type="text" name="apply_num" value="<%= mod_apply.apply_num %>"><br><br>
+          이름 : <input type="text" name="name" value="<%= mod_apply.name %>"><br><br>
+          학번 : <input type="text" name="student_id" value="<%= mod_apply.student_id %>"><br><br>
+          전공 : <input type="text" name="major" value="<%= mod_apply.major %>">
+        </div>
+        <div class="col-md-4">
+          이메일 : <input type="text" name="email" value="<%= mod_apply.email %>"><br><br>
+          전화번호 : <input type="text" name="phonenumber" value="<%= mod_apply.phonenumber %>"><br><br>
+          성별 : <input type="text" name="sex" value="<%= mod_apply.sex %>"><br><br>
+          나이 : <input type="text" name="age" value="<%= mod_apply.age %>">
+        </div>
+        <div class="col-md-4">
+          지원서파일 : <input type="text" name="file" value="<%= mod_apply.file %>"><br><br>
+          지원서파일2 : <input type="text" name="file2" value="<%= mod_apply.file2 %>"><br><br>
+          비고 : <textarea name="etc"><%= mod_apply.etc %></textarea><br><br>
+          <input type="hidden" name="rated" value="0">
+          <input type="submit" class="btn btn-blue" value="수정">
+        </div>
+    </form>
+    <% end %>
+  </div>
+  <% end %>
+
+  <!-- Table -->
+  <table class="table">
+    <thead>
+        <tr style="font-weight:bold;">
+            <td style="width:1%;">id</td>
+            <td style="width:5%;">이름(username)</td>
+            <td style="width:5%;">학번(student_id)</td>
+            <td style="width:0%;">전공(major)</td>
+            <td style="width:5%;">이메일(email)</td>
+            <td style="width:5%;">전화번호(phonenumber)</td>
+            <td style="width:5%;">성별(sex)</td>
+            <td style="width:5%;">나이(age)</td>
+            <td style="width:0%;">평가 진행률</td>
+            <td style="width:15%;">비고(etc)</td>
+            <td>기능</td>
+        </tr>
+    </thead>
+    
+    <style>
+        .rate_input{
+            width:100%;
+        }
+        .integer{
+            width:47%;
+        }
+    </style>
+                
+    <tbody>
+        <% Apply.all.each do |apply| %>
+            <tr>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.apply_num %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.name %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.student_id %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.major %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.email %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.phonenumber %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.sex %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><%= apply.age %></a></td>
+                <td><a href="/home/rate/<%= apply.id %><%= "?lion=2015" if session[:admin] == '2015' %>"><b>8</b>명 중 <b><%= apply.rates.count %></b>명<br><b>(<%= apply.rates.count*100/8 %>%)</b></a></td>
+                <td><%= apply.etc %></td>
+                <td>
+                  <% if session[:admin] == '2015' %>
+                  <a href="/home/delete_apply/<%= apply.id %>" class="btn btn-primary btn-sm" style="margin-bottom: 4px;">삭제</a><br>
+                  <a href="/home/index/<%= apply.id %>?lion=2015" class="btn btn-primary btn-sm">수정</a>
+                  <% else %>
+                  <a href="/home/rate/<%= apply.id %>" class="btn btn-primary btn-sm">심사하기</a>
+                  <% end %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+  </table>
+  <div class="panel-heading" style="font-size:25px; text-align: center; font-weight: bold;">
+    전체 서류심사 완료율 = <%= Rate.count * 100 / (Apply.count * 8) %>% <% if session[:admin] == '2015' %>총 <%= (Apply.count * 8) - Rate.count %>개 남음.<% end %> <span style="color:green">완료</span> <span style="color:rgba(0, 171, 212, 0.26)">미완료</span>
+  </div>
+  <!-- Table -->
+  <table class="table">
+    <thead>
+      <tr>
+        <td style="font-weight:bold;">심사자</td>
+        <% names = [] %>
+        <% Apply.all.each do |apply| %>
+          <td style="font-weight:bold;"><a href="/home/rate/<%= apply.id %>"><%= apply.name %></a></td>
+          <% names << apply.id %>
+        <% end %>
+      </tr>
+    </thead>
+    
+    <style>
+        .rate_input{
+            width:100%;
+        }
+        .integer{
+            width:47%;
+        }
+    </style>
+                
+    <tbody>
+      <%# i = 0 %>
+        <% @mbr.each do |mbr| %>
+            <tr>
+                <td style="width:20px;"><%= mbr %></td>
+                <% Apply.all.each do |apply| %>
+                  <% flag=0 %>
+                    <% apply.rates.each do |ap| %>
+                        <% 
+                          if ap.user_name == mbr
+                              
+                            flag=1
+                            next
+                          end
+                        %>
+                    <% end %>
+                    <% if flag == 1 %>
+                      <td style="width:20px;padding:0; background:green; border: 2px solid #2196F3;" class="finished_apply">
+                    <% else %>
+                      <td style="width:20px;padding:0; background:rgba(0, 171, 212, 0.26); border: 2px solid #2196F3;" class="finished_apply">
+                    <% end %>
+                    <a href="/home/rate/<%= apply.id %>"><div width="100%" style="height:30px"></div></a>
+                    </td>
+                  <% end %>
+            </tr>
+        <% end %>
+      <!--<td style="width:20px;padding:0; background:#0A6; border: 2px solid #2196F3;" class="finished_apply"></td>-->
+    </tbody>
+  </table>
+</div>
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><%#= apply.student_id %></a></td>-->
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><%#= apply.major %></a></td>-->
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><%#= apply.email %></a></td>-->
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><%#= apply.phonenumber %></a></td>-->
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><%#= apply.sex %></a></td>-->
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><%#= apply.age %></a></td>-->
+                <!--<td><a href="/home/rate/<%#= apply.id %><%#= "?lion=2015" if session[:admin] == '2015' %>"><b>8</b>명 중 <b><%#= apply.rates.count %></b>명<br><b>(<%#= apply.rates.count*100/8 %>%)</b></a></td>-->
+                <!--<td><%#= apply.etc %></td>-->
+                <!--<td>-->
+                <!--  <%# if session[:admin] == '2015' %>-->
+                <!--  <a href="/home/delete_apply/<%#= apply.id %>" class="btn btn-primary btn-sm" style="margin-bottom: 4px;">삭제</a><br>-->
+                <!--  <a href="/home/index/<%#= apply.id %>?lion=2015" class="btn btn-primary btn-sm">수정</a>-->
+                <!--  <%# else %>-->
+                <!--  <a href="/home/rate/<%#= apply.id %>" class="btn btn-primary btn-sm">심사하기</a>-->
+                <!--  <%# end %>-->
+                <!--</td>-->
+                
